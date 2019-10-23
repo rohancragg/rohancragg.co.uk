@@ -1,0 +1,4 @@
+[submodule "src/themes/aerial-custom"]
+	path = src/themes/aerial-custom
+	url = https://github.com/rohancragg/aerial.git
+	branch = use-internal-templates

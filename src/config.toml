@@ -1,0 +1,55 @@
+baseURL = "https://rohancragg.co.uk/"
+languageCode = "en-gb"
+title = "Rohan Cragg - Personal Landing Page"
+theme = "aerial-custom"
+
+[params]
+  # OpenGraph
+  description = "My personal landing page (@rohancragg)"
+  images = ["https://secure.gravatar.com/avatar/7247a600de9bfdd03425180d607c85d7?s=4096"]
+  title = "me@rohancragg"
+  # aerial theme
+  name = "Rohan Cragg"
+  about = "Developer  •  Dad  •  Musician  •  not necessarily in that order..."
+  copyright = "rohancragg.co.uk"
+  #Disable the scrolling background by entering any string for bg_scroll. Enable by leaving bg_scroll empty.
+  bg_scroll = ""
+  favicon = "favicon.ico"
+
+
+[[params.social]]
+  medium = "Twitter"
+  icon = "twitter"
+  link = "https://twitter.com/rohancragg"
+
+[[params.social]]
+  medium = "Facebook"
+  icon = "facebook"
+  link = "https://www.facebook.com/rohancragg"
+
+[[params.social]]
+  medium = "Github"
+  icon = "github"
+  link = "https://rohancragg.github.io/"
+
+[[params.social]]
+  medium = "Email"
+  icon = "envelope-o"
+  link = "https://rohancragg.typeform.com/to/Sy34Z6"
+
+[taxonomies]
+  series = "series"
+
+[deployment]
+  # By default, files are uploaded in an arbitrary order.
+  # Files that match the regular expressions in the "Order" list
+  # will be uploaded first, in the listed order.
+  order = [".jpg$", ".gif$"]
+
+[[deployment.targets]]
+  name = "webhome-stage"
+  URL = "azblob://webhome-stage"
+
+[[deployment.targets]]
+  name = "webhome-prod"
+  URL = "azblob://webhome"

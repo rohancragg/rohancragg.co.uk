@@ -1,0 +1,48 @@
+version: 2.0
+jobs:
+  build:
+    docker:
+      - image: cibuilds/hugo:0.59.0
+    working_directory: ~/hugo
+    steps:
+      - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
+      - run:
+          name: "Build Website With Hugo"
+          working_directory: ~/hugo/src
+          command: HUGO_ENV=production hugo -v
+      - run:
+          name: "Test Website"
+          working_directory: ~/hugo/src
+          command: echo 'ON HOLD' #htmlproofer public --allow-hash-href --check-html --empty-alt-ignore --disable-external
+      - run:
+          name: "Deploy to STAGING Storage Account"
+          working_directory: ~/hugo/src
+          command: hugo deploy -v --target=webhome-stage --maxDeletes -1 --force
+  deploy:
+    docker:
+      - image: cibuilds/hugo:0.59.0
+    working_directory: ~/hugo
+    steps:
+      - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
+      - run:
+          name: "Deploy to STAGING Storage Account"
+          working_directory: ~/hugo/src
+          command: HUGO_ENV=production hugo -v && hugo deploy -v --target=webhome-prod --maxDeletes -1 --force
+workflows:
+  version: 2
+  build-approve-deploy:
+    jobs:
+      - build  # your custom job from your config, that builds your code
+      - hold: # <<< A job that will require manual approval in the CircleCI web application.
+          type: approval # <<< This key-value pair will set your workflow to a status of "On Hold"
+          requires: # We only run the "hold" job when build has succeeded
+           - build
+      # On approval of the `hold` job, any successive job that requires the `hold` job will run.
+      # In this case, a user is manually triggering the deploy job.
+      - deploy:
+          requires:
+            - hold
